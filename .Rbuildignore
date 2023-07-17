@@ -10,7 +10,3 @@
 ^inst/report/index_cache$
 ^inst/report/index_data$
 ^tests/testthat/_snaps$
-^index\.qmd$
-^index_files$
-^data*\.rds$
-^index\.html$

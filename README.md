@@ -32,7 +32,7 @@ remotes::install_github("miraisolutions/covid19-vaccination-ch")
 and used to render the article locally from R via
 
 ``` r
-quarto::quarto_render("index.qmd")
+covid19vaccinationch::run_report()
 
 ```
 See help file for using the latest data from *BAG* source.

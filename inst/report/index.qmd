@@ -60,12 +60,12 @@ library(magrittr)
 table_css <- "border-collapse: separate; border-spacing: 0.25em; width: 100%; font-size: 0.7em; margin-bottom: 14.5px;"
 table_cell_css <- "white-space: nowrap; font-size: .95em;" # relative to the table_css
 
-source("R/run_report.R")
-source("R/shiny_lineplot.R")
-source("R/plots.R")
-source("R/build_data.R")
-source("R/utils_read.R")
-source("R/utils.R")
+source("../../R/run_report.R")
+source("../../R/shiny_lineplot.R")
+source("../../R/plots.R")
+source("../../R/build_data.R")
+source("../../R/utils_read.R")
+source("../../R/utils.R")
 
 ```
 
@@ -615,12 +615,12 @@ library(ggplot2)
 library(scales)
 library(stringr)
 library(lubridate)
-source("R/run_report.R")
-source("R/shiny_lineplot.R")
-source("R/plots.R")
-source("R/build_data.R")
-source("R/utils_read.R")
-source("R/utils.R")
+source("../../R/run_report.R")
+source("../../R/shiny_lineplot.R")
+source("../../R/plots.R")
+source("../../R/build_data.R")
+source("../../R/utils_read.R")
+source("../../R/utils.R")
 data1 <- readRDS("data1.rds") 
 
 output$lineplot1 <- plotly::renderPlotly({
