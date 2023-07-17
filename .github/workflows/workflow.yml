@@ -73,8 +73,8 @@ jobs:
           git pull --ff-only
           git push origin
 
-       # - name: Install Quarto
-      #   uses: quarto-dev/quarto-actions/setup@v2
+      - name: Install Quarto
+        uses: quarto-dev/quarto-actions/setup@v2
 
       # - name: Render Quarto Project
       #   uses: quarto-dev/quarto-actions/render@v2
