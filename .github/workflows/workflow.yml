@@ -23,7 +23,7 @@ jobs:
       # single OS and R version, aligned with the target deployment environment
       matrix:
         config:
-          - {os: ubuntu-latest, r: '4.2.1'}
+          - {os: ubuntu-latest, r: '4.3.0'}
 
     env:
       # Access token for GitHub
@@ -50,7 +50,7 @@ jobs:
         uses: r-lib/actions/setup-renv@v2
 
       - name: Fetch and rebuild latest BAG data
-        if: github.event_name == 'schedule'
+        # if: github.event_name == 'schedule'
         run: |
           pkgload::load_all(export_all = TRUE, helpers = FALSE, attach_testthat = FALSE)
           build_data()
@@ -64,7 +64,7 @@ jobs:
         uses: r-lib/actions/check-r-package@v2
 
       - name: Commit and push updated BAG data
-        if: github.event_name == 'schedule'
+        # if: github.event_name == 'schedule'
         run: |
           git config --local user.email "actions@github.com"
           git config --local user.name "GitHub Actions"
@@ -73,9 +73,18 @@ jobs:
           git pull --ff-only
           git push origin
 
+      - name: Install Quarto
+        uses: quarto-dev/quarto-actions/setup@v2
+
+      - name: Render Quarto Project
+        uses: quarto-dev/quarto-actions/render@v2
+        with:
+          to: html # If set, it will be equivalent to `quarto render --to html`
+          # path: source-folder # By default, the current working dir is used i.e `quarto render .`
+
       - name: Deploy to shinyapps.io
         # Continuous deployment only for pushes to the main / master branch
-        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+        # if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
         env:
           SHINYAPPS_ACCOUNT: ${{ secrets.SHINYAPPS_ACCOUNT }}
           SHINYAPPS_TOKEN: ${{ secrets.SHINYAPPS_TOKEN }}
