@@ -16,6 +16,11 @@ format:
     number-sections: false
     self-contained: false
     smooth-scroll: true
+editor: visual
+execute:
+  echo: false
+  warning: false
+
 
 ---
 
