@@ -8,8 +8,8 @@ report_path <- function() {
 #'
 #' @export
 data_path <- function() {
-  #system.file("bag_data", package = "covid19vaccinationch")
-  "inst/bag_data"
+  system.file("bag_data", package = "covid19vaccinationch")
+  #"inst/bag_data"
 }
 
 #' Data path inside the package
