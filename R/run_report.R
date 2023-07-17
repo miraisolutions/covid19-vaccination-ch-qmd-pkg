@@ -9,6 +9,7 @@ report_path <- function() {
 #' @export
 data_path <- function() {
   system.file("bag_data", package = "covid19vaccinationch")
+  #"../bag_data"
 }
 
 #' #' Run the Rmd report
