@@ -21,7 +21,6 @@ execute:
   echo: false
   warning: false
 
-
 ---
 
 This is a Quarto website.

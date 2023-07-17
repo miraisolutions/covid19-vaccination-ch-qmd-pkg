@@ -1,5 +1,9 @@
 # covid19-vaccination-ch
 
+  <!-- badges: start -->
+  [![workflow](https://github.com/miraisolutions/covid19-vaccination-ch-qmd-pkg/actions/workflows/workflow.yml/badge.svg)](https://github.com/miraisolutions/covid19-vaccination-ch-qmd-pkg/actions/workflows/workflow.yml)
+  <!-- badges: end -->
+
 The goal of `covid19-vaccination-ch` is to provide a dashboard article
 analyzing the weekly vaccination report from [**BAG**](https://www.bag.admin.ch/bag/en/home.html) (BundesAmt für Gesundheit - Swiss Federal Office for Public Health) collecting the data from the past 4 weeks.
 
