@@ -43,6 +43,8 @@ options(width = 80)
 #   }
 #   NULL
 # }
+    pkgload::load_all(export_all = FALSE, helpers = FALSE, attach_testthat = FALSE)
+
 library(jsonlite)
 library(dplyr)
 library(tidyr)
@@ -64,13 +66,15 @@ library(magrittr)
 table_css <- "border-collapse: separate; border-spacing: 0.25em; width: 100%; font-size: 0.7em; margin-bottom: 14.5px;"
 table_cell_css <- "white-space: nowrap; font-size: .95em;" # relative to the table_css
 
-source("R/run_report.R")
-source("R/shiny_lineplot.R")
-source("R/plots.R")
-source("R/build_data.R")
-source("R/utils_read.R")
-source("R/utils.R")
+# source("R/run_report.R")
+# source("R/shiny_lineplot.R")
+# source("R/plots.R")
+# source("R/build_data.R")
+# source("R/utils_read.R")
+# source("R/utils.R")
 
+# remotes::install_local()
+# library(covid19vaccinationch)
 ```
 
 Since May 2020 [**Mirai Solutions**]{style="background-color: #dfc77f"} is showing a dashboard on our [gallery](https://mirai-solutions.ch/gallery/){target="_blank"} that contains a global view of the [COVID-19 Pandemic](https://mirai-solutions.ch/gallery/covid19/){target="_blank"} with a further split by continent and country. We use publicly available data from the [COVID-19 Data Hub](https://covid19datahub.io/){target="_blank"}, a great open source project providing a unified data set put together from numerous official local sources from all over the world.
@@ -613,18 +617,20 @@ fluidRow(
 # source("R/build_data.R")
 # source("R/utils_read.R")
 # source("R/utils.R")
-library(dplyr)
-library(plotly)
-library(ggplot2)
-library(scales)
-library(stringr)
-library(lubridate)
-source("R/run_report.R")
-source("R/shiny_lineplot.R")
-source("R/plots.R")
-source("R/build_data.R")
-source("R/utils_read.R")
-source("R/utils.R")
+# library(dplyr)
+# library(plotly)
+# library(ggplot2)
+# library(scales)
+# library(stringr)
+# library(lubridate)
+# source("R/run_report.R")
+# source("R/shiny_lineplot.R")
+# source("R/plots.R")
+# source("R/build_data.R")
+# source("R/utils_read.R")
+# source("R/utils.R")
+pkgload::load_all(export_all = FALSE, helpers = FALSE, attach_testthat = FALSE)
+
 data1 <- readRDS("data1.rds") 
 
 output$lineplot1 <- plotly::renderPlotly({
