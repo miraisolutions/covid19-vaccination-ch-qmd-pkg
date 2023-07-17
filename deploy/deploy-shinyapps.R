@@ -11,7 +11,7 @@ quarto::quarto_publish_app(
   input = "inst/report/index.qmd",
   server = "shinyapps.io",
   name = "covid-19-vaccination-ch-qmd-pkg",
-  # title = "Covid19 Vaccination CH",
+  title = "Covid19 Vaccination CH",
   account = "miraisolutions",
   render = "server"
 )
