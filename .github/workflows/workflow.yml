@@ -52,7 +52,6 @@ jobs:
       - name: Fetch and rebuild latest BAG data
         # if: github.event_name == 'schedule'
         run: |
-          remotes::install_local()
           #pkgload::load_all(export_all = TRUE, helpers = FALSE, attach_testthat = FALSE)
           build_data()
         shell: Rscript {0}
