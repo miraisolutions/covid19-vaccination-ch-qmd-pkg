@@ -24,7 +24,7 @@ test_that("make_100k works", {
 })
 
 test_that("aggregate_to_month works", {
-  data <- readRDS(file.path(data_path(), "CASES.rds"))
+  data <- readRDS(file.path(data_path_pkg(), "CASES.rds"))
 
   data <- data %>%
     group_by(Week,AgeClass ) %>%

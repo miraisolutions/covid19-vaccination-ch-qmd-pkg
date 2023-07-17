@@ -12,6 +12,13 @@ data_path <- function() {
   "../bag_data"
 }
 
+#' Data path inside the package
+#'
+#' @export
+data_path_pkg <- function() {
+  system.file("bag_data", package = "covid19vaccinationch")
+}
+
 #' #' Run the Rmd report
 #' #'
 #' #' @param fetch_latest_data logical, if `TRUE` the data re-fetched from the BAG
