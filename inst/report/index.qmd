@@ -33,16 +33,7 @@ To learn more about Quarto websites visit <https://quarto.org/docs/websites>.
 
 options(width = 80)
 
-# load_pkg_c19 <- function(usepkgload) {
-#   if (usepkgload) {
-#     pkgload::load_all(export_all = FALSE, helpers = FALSE, attach_testthat = FALSE)
-#   }
-#   if (!("package:covid19vaccinationchqmd" %in% search())) {
-#     library(covid19vaccinationchqmd)
-#   }
-#   NULL
-# }
-    pkgload::load_all(export_all = FALSE, helpers = FALSE, attach_testthat = FALSE)
+pkgload::load_all(export_all = FALSE, helpers = FALSE, attach_testthat = FALSE)
 
 library(jsonlite)
 library(dplyr)
@@ -50,14 +41,12 @@ library(tidyr)
 library(stringr)
 library(ggplot2)
 library(plotly)
-library(tidyselect)
+# library(tidyselect)
 library(scales)
 library(htmlTable)
 library(lubridate)
 library(shiny)
-library(rsconnect)
-library(magrittr)
-# library(covid19vaccinationchqmd)
+# library(rsconnect)
 
 
 # we use a font size relative to the responsive body font size (em)
@@ -194,8 +183,6 @@ datacases <- datacases %>%
 ```
 
 The current situation of the last 4 weeks as of **`r weeks_from_to[2]`**, i.e. how the infections, hospitalizations and deaths occurred across the age classes in absolute terms is shown below. Overall during this period Switzerland has registered [**`r .extract_value(datacases, "Infections")`**]{style="background-color: #dfc77f"} infections, [**`r .extract_value(datacases, "Hospitalizations")`**]{style="background-color: #dfc77f"} hospitalizations and [**`r .extract_value(datacases, "Deaths")`**]{style="background-color: #dfc77f"} deaths.
-
-@fig-cases see past 4 weeks cases-hospitalizations and deaths.
 
 ```{r }
 #| label: fig-cases
@@ -573,8 +560,6 @@ first.week.booster <- DataRoll4W100k %>%
 # override values for booster
 DataRoll4W100k <- DataRoll4W100k %>% mutate(Value = ifelse(Status == "Fully vac. Booster" & AsOfDate < as.character(first.week.booster), NA, Value))
 
-# saveRDS(last_timeline_weeks, "last_timeline_weeks.rds") 
-
 ```
 
 The "Partially Vaccinated" population has been removed while the Booster status is shown only since **`r first.week.booster[1]`** (`r weeks_to_date(as.character(first.week.booster[1]), range = FALSE)`), i.e. when Booster doses had been administered to at least `r paste0(threshold.boostervax[1]*100, "%")` of the population. In order to include more data also during low-waves periods the age Classes are restricted to 4: **`r ageclasses2`**. We also reduce the time-line to start from week **`r last_timeline_weeks[1]`**, corresponding to the date `r weeks_to_date(last_timeline_weeks[1], range = FALSE)` when at least `r paste0(threshold.vax[1]*100, "%")` of the population was fully vaccinated.\
@@ -585,7 +570,7 @@ The graph below shows the incidence over 100'000 people for each Age and Vaccina
 ```{r }
 data1 <- DataRoll4W100k %>% filter(AsOfDate %in% last_timeline_weeks)
 
-saveRDS(data1, "data1.rds") 
+saveRDS(data1, file.path(data_path(), "data1.rds")) 
 ```
 
 ```{r }
@@ -632,7 +617,7 @@ fluidRow(
 # source("R/utils.R")
 pkgload::load_all(export_all = FALSE, helpers = FALSE, attach_testthat = FALSE)
 
-data1 <- readRDS("data1.rds") 
+data1 <- readRDS(file.path(data_path(), "data1.rds")) 
 
 output$lineplot1 <- plotly::renderPlotly({
       # if (is.null(input$case1))
@@ -672,7 +657,7 @@ DataRoll4W100kratio <- left_join(DataRoll4W100kVac, DataRoll4W100kUnVac, by = c(
 
 status2 <- names(vac_levels())[grep("fully", vac_levels())]
 data2 <- DataRoll4W100kratio %>% filter(AsOfDate %in% last_timeline_weeks)
-saveRDS(data2, "data2.rds") 
+saveRDS(data2, file.path(data_path(), "data2.rds")) 
 
 #UI
 fluidRow(
@@ -696,7 +681,7 @@ plotly::plotlyOutput("lineplot2")
 
 ```{r lineplot2_output_plot}
 #| context: server 
-data2 <- readRDS("data2.rds") 
+data2 <- readRDS(file.path(data_path(), "data1.rds")) 
 # last_timeline_weeks <- readRDS("last_timeline_weeks.rds") 
 
 # data2 <- DataRoll4W100kratio %>% filter(AsOfDate %in% last_timeline_weeks)
@@ -711,7 +696,7 @@ output$lineplot2 <- plotly::renderPlotly({
                     FACET = "AgeClass", g_palette = res$col_status, 
                     title = "Cases Ratio of Unvaccinated, per Vac. Status / Age Class") })
 
-file.remove(c("data1.rds", "data2.rds"))
+file.remove(c(file.path(data_path(), "data1.rds"), file.path(data_path(), "data2.rds")))
 
 
 ```

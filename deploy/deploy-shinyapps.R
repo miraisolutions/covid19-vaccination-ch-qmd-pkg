@@ -7,8 +7,6 @@ rsconnect::setAccountInfo(
 )
 
 file.copy("inst/report/index.qmd", "index.qmd", overwrite = TRUE)
-
-
 quarto::quarto_publish_app(
   input = "index.qmd",
   server = "shinyapps.io",

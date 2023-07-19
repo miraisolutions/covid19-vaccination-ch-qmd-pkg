@@ -11,24 +11,23 @@ Depends:
     R (>= 4.0.0)
 Imports: 
     dplyr,
-    DT,
     ggplot2,
-    htmlTable,
     jsonlite,
     lubridate,
-    pkgload,
     plotly,
+    quarto,
     rmarkdown,
     scales,
+    pkgload,
     shiny (>= 1.7.1),
     stringr,
-    tidyr,
-    tidyselect
+    tidyr
 Suggests: 
     processx,
-    quarto,
     rsconnect,
     spelling,
+    htmlTable,
+    tidyselect,
     testthat (>= 3.0.0)
 Encoding: UTF-8
 Language: en-US
