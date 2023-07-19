@@ -60,6 +60,9 @@ jobs:
         run: install.packages("rcmdcheck")
         shell: Rscript {0}
 
+      - name: Install Quarto
+        uses: quarto-dev/quarto-actions/setup@v2
+
       - name: Check package
         uses: r-lib/actions/check-r-package@v2
 
@@ -72,9 +75,6 @@ jobs:
           git commit -m "Update BAG data" || echo "No changes to commit"
           git pull --ff-only
           git push origin
-
-      - name: Install Quarto
-        uses: quarto-dev/quarto-actions/setup@v2
 
       - name: Deploy to shinyapps.io
         # Continuous deployment only for pushes to the main / master branch
