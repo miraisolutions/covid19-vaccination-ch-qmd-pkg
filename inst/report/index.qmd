@@ -42,14 +42,10 @@ library(tidyr)
 library(stringr)
 library(ggplot2)
 library(plotly)
-# library(tidyselect)
 library(scales)
 library(htmlTable)
 library(lubridate)
 library(shiny)
-# library(rsconnect)
-
-
 # we use a font size relative to the responsive body font size (em)
 # 
 table_css <- "border-collapse: separate; border-spacing: 0.25em; width: 100%; font-size: 0.7em; margin-bottom: 14.5px;"
@@ -127,7 +123,6 @@ The age categories have been redefined again as: **`r unique(ageclassMap$AgeClas
 ### Last 4 weeks Cases and Vaccination
 
 ```{r }
-#| echo: false
 
 aggrvars = names(DATA.AG4W) [sapply(DATA.AG4W, is.numeric)] %>%
   grep(pattern = "_tot$", value = TRUE, invert = TRUE)  %>%
@@ -333,9 +328,6 @@ StackedBarplotCovid(DataPlotTab1, X = "AgeClass", FILL = "Status", FACET = "Case
 Overall the vaccination status is "Unknown" for **`r .calc_perc_unknwon(DataPlot, "Hospitalizations")`** of the *Hospitalized* and for **`r .calc_perc_unknwon(DataPlot, "Deaths")`** of the *Deaths*.
 
 ```{r}
-# DataTab = DataPlot %>%
-#   rename(Status = vaccination_status) %>%
-#   rename(value = Value)
 
 DataTab %>%
   filter(!Case %in% c("Infections")) %>%
@@ -382,8 +374,11 @@ DataTabScale %>%
 After this reallocation let's look at the records **over 100'000 people** in each reference Age Class and vaccination status, and at the ratio between the "Unvaccinated" and "Vaccinated" cases. This view will be used also in the following sections. When accounting for the total, i.e. "All" Age Class, age adjusted figures have been computed accounting for the different distribution of the "Vaccinated" and "Unvaccinated" groups across the different Age Classes.
 
 ```{r}
+#| label: fig-vac-breakthrough-100K
+#| fig-cap: "Last 4 weeks vaccination breakthroughs Vac vs Unvac over 100k."
+#| warning: false
+#| fig-alt: "Last 4 weeks vaccination breakthroughs Vac vs Unvac over 100k."
 
-# scale to 100k
 DataPlot100kScale <- make_100k(DataTabScale %>% rename(Value = value), 
                                by = c("AsOfDate","AgeClass", "Status"), status = "Status")
 
@@ -396,6 +391,11 @@ StackedBarplotCovid(DataPlot100kScale2, X = "AgeClass", FILL = "Status", FACET =
 The ratio of the impact **per 100'000 people** of the "Fully Vaccinated" vs the "Unvaccinated" measures the vaccination effect and the risk of *Hospitalization* or *Death* of the "Unvaccinated" versus the "Vaccinated".
 
 ```{r}
+#| label: fig-vac-hosp-100K
+#| fig-cap: "Last 4 weeks Hosp. Deaths Vac vs Unvac over 100k."
+#| warning: false
+#| fig-alt: "Last 4 weeks Hosp. Deaths Vac vs Unvac over 100k."
+
 DataPlot100kScaleRatios <- calc_ratio_fullyvac(DataPlot100kScale) %>%
   filter(Status %in% names(vac_levels())[grep("fully", vac_levels())])
 
@@ -445,7 +445,10 @@ Despite the decay of vaccination benefits over time and against infections (Omic
 The Incidence over 100'000 people in the 3 scenarios + "Current" are presented below:
 
 ```{r}
-
+#| label: fig-vac-hosp-scen-100K
+#| fig-cap: "Last 4 weeks Hosp. Deaths Vac vs Unvac Scenarios over 100k."
+#| warning: false
+#| fig-alt: "Last 4 weeks Hosp. Deaths Vac vs Unvac Scenarios over 100k."
 datacases100k = datacases100k %>% mutate(Status = "current")
 
 DataPlot100kp = DataPlot100kScale %>%
@@ -468,7 +471,10 @@ StackedBarplotCovid(DataPlot100kp, X = "AgeClass", FILL = "Status", FACET = "Cas
 More importantly, projecting the values of the 3 scenarios on the whole population we can evaluate the vaccination impact in absolute terms.
 
 ```{r}
-
+#| label: fig-vac-hosp-scen
+#| fig-cap: "Last 4 weeks Hosp. Deaths Vac vs Unvac Scenarios projections."
+#| warning: false
+#| fig-alt: "Last 4 weeks Hosp. Deaths Vac vs Unvac Scenarios projections."
 DataPlotp = DataPlot100kp %>%
   select(-pop) %>%
   left_join(Pop, by = c(c("AsOfDate", "AgeClass"))) %>%
@@ -553,13 +559,11 @@ The graph below shows the incidence over 100'000 people for each Age and Vaccina
 #| context: data
 data1 <- DataRoll4W100k %>% filter(AsOfDate %in% last_timeline_weeks)
 
-#saveRDS(data1, file.path(data_path(), "data1.rds")) 
 ```
 
 ```{r }
 
 status1 <- names(vac_levels())[grep("fully_vaccinated|not_vaccinated", vac_levels())]
-#data1 <- DataRoll4W100k %>% filter(AsOfDate %in% last_timeline_weeks)
 
 #UI
 fluidRow(
@@ -580,31 +584,12 @@ fluidRow(
 
 ```{r }
 #| context: server
-# source("R/run_report.R")
-# source("R/shiny_lineplot.R")
-# source("R/plots.R")
-# source("R/build_data.R")
-# source("R/utils_read.R")
-# source("R/utils.R")
-# library(dplyr)
-# library(plotly)
-# library(ggplot2)
-# library(scales)
-# library(stringr)
-# library(lubridate)
-# source("R/run_report.R")
-# source("R/shiny_lineplot.R")
-# source("R/plots.R")
-# source("R/build_data.R")
-# source("R/utils_read.R")
-# source("R/utils.R")
-# pkgload::load_all(export_all = FALSE, helpers = FALSE, attach_testthat = FALSE)
-# 
-# data1 <- readRDS(file.path(data_path(), "data1.rds")) 
-
+#| label: fig-vac-hosp-impact-age
+#| fig-cap: "Last 4 weeks Impact Hosp. Deaths Vac vs Unvac per age class."
+#| warning: false
+#| fig-alt: "Last 4 weeks Impact Hosp. Deaths Vac vs Unvac per age class."
 output$lineplot1 <- plotly::renderPlotly({
-      # if (is.null(input$case1))
-      #   return(plot.new())
+
       message("here I am ")
       res <- filter_dataplot(data1, input$status1, input$case1)
 
@@ -641,7 +626,6 @@ DataRoll4W100kratio <- left_join(DataRoll4W100kVac, DataRoll4W100kUnVac, by = c(
 
 status2 <- names(vac_levels())[grep("fully", vac_levels())]
 data2 <- DataRoll4W100kratio %>% filter(AsOfDate %in% last_timeline_weeks)
-# saveRDS(data2, file.path(data_path(), "data2.rds")) 
 
 #UI
 fluidRow(
@@ -665,9 +649,10 @@ plotly::plotlyOutput("lineplot2")
 
 ```{r lineplot2_output_plot}
 #| context: server 
-# data2 <- readRDS(file.path(data_path(), "data1.rds")) 
-
-
+#| label: fig-vac-hosp-impact-ratio-age
+#| fig-cap: "Last 4 weeks Ratio Hosp. Deaths Vac vs Unvac per age class."
+#| warning: false
+#| fig-alt: "Last 4 weeks Ratio Hosp. Deaths Vac vs Unvac per age class."
 output$lineplot2 <- plotly::renderPlotly({
       if (is.null(input$case2))
         return(plot.new())
@@ -678,7 +663,6 @@ output$lineplot2 <- plotly::renderPlotly({
                     FACET = "AgeClass", g_palette = res$col_status, 
                     title = "Cases Ratio of Unvaccinated, per Vac. Status / Age Class") })
 
-# file.remove(c(file.path(data_path(), "data1.rds"), file.path(data_path(), "data2.rds")))
 ```
 
 ### Conclusions
