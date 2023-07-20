@@ -39,7 +39,7 @@ and used to render the article locally from R via
 # render
 quarto::quarto_render("inst/report/index.qmd")
 # run
-quarto::quarto_render("inst/report/index.qmd")
+quarto::quarto_run("inst/report/index.qmd")
 
 # or
 covid19vaccinationch::run_report()
