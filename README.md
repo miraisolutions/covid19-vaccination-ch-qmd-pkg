@@ -1,6 +1,10 @@
-# covid19-vaccination-ch
+# covid19-vaccination-ch-qmd-pkg
 
-The goal of `covid19-vaccination-ch` is to provide a dashboard article
+  <!-- badges: start -->
+  [![workflow](https://github.com/miraisolutions/covid19-vaccination-ch-qmd-pkg/actions/workflows/workflow.yml/badge.svg)](https://github.com/miraisolutions/covid19-vaccination-ch-qmd-pkg/actions/workflows/workflow.yml)
+  <!-- badges: end -->
+
+The goal of `covid19-vaccination-ch-qmd-pkg` is to provide a dashboard article
 analyzing the weekly vaccination report from [**BAG**](https://www.bag.admin.ch/bag/en/home.html) (BundesAmt für Gesundheit - Swiss Federal Office for Public Health) collecting the data from the past 4 weeks.
 
 The **Vaccinated** population is split into 3 categories:
@@ -23,29 +27,35 @@ The application fetches the data from *BAG* on a daily basis as part of a [Conti
 
 ## Package covid19vaccinationch
 
-The `covid19-vaccination-ch` dashboard article is implemented through the supporting R package **covid19vaccinationch** that can be installed from GitHub with
+The `covid19-vaccination-ch-qmd-pkg` dashboard article is implemented through the supporting R package **covid19vaccinationch** that can be installed from GitHub with
 
 ``` r
-remotes::install_github("miraisolutions/covid19-vaccination-ch")
+remotes::install_github("miraisolutions/covid19-vaccination-ch-qmd-pkg")
 ```
 
 and used to render the article locally from R via
 
 ``` r
+# render
+quarto::quarto_render("inst/report/index.qmd")
+# run
+quarto::quarto_render("inst/report/index.qmd")
+
+# or
 covid19vaccinationch::run_report()
 
 ```
 See help file for using the latest data from *BAG* source.
 
-## R Markdown article
+## Quarto article
 
-The dashboard article is defined as an R Markdown document `inst/report/index.Rmd` shipped with the **covid19vaccinationch** package, containing the article text and the R code that reads and processes the data.
+The dashboard article is defined as an Quarto document `inst/report/index.qmd` shipped with the **covid19vaccinationch** package, containing the article text and the R code that reads and processes the data.
 
-The R Markdown document uses `runtime: shiny_prerendered` and contains both `ggplot2` / `plotly` graphs and `shiny` dynamic charts. The usage of `runtime: shiny_prerendered` allows speeding up the rendering of the article for the users, see the corresponding [documentation](https://rmarkdown.rstudio.com/authoring_shiny_prerendered.HTML).
+The Quarto document uses `server: shiny` and contains both `ggplot2` / `plotly` graphs and `shiny` dynamic charts. The usage of `server: shiny` allows running the shiny chunks in the document.
 
 ## Deployment to *shinyapps.io*
 
-The `covid19-vaccination-ch` R Markdown article is deployed to **shinyapps.io** and can be accessed at <https://mirai-solutions.ch/gallery/covid19-vaccination-ch>.
+The `covid19-vaccination-ch` Quarto article is deployed to **shinyapps.io** and can be accessed at <https://miraisolutions.shinyapps.io/covid-19-vaccination-ch-qmd-pkg/>.
 
 ## Data building with GitHub Actions
 

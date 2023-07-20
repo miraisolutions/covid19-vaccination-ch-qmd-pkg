@@ -1,6 +1,6 @@
 Package: covid19vaccinationch
-Title: Vaccination Breakthroughs in CH
-Version: 1.1.1
+Title: Vaccination Breakthroughs in CH (Qmd)
+Version: 2.0.0
 Authors@R: 
     person("Guido", "Maggio", , "guido-maggio@mirai-solutions.com", role = c("cre", "aut"))
 Description: A live article on vaccination breakthroughs in Switzerland,
@@ -11,25 +11,25 @@ Depends:
     R (>= 4.0.0)
 Imports: 
     dplyr,
-    DT,
     ggplot2,
-    htmlTable,
     jsonlite,
     lubridate,
-    pkgload,
     plotly,
+    quarto,
     rmarkdown,
     scales,
+    pkgload,
     shiny (>= 1.7.1),
     stringr,
-    tidyr,
-    tidyselect
+    tidyr
 Suggests: 
     processx,
     rsconnect,
     spelling,
+    htmlTable,
+    tidyselect,
     testthat (>= 3.0.0)
 Encoding: UTF-8
 Language: en-US
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.2
+RoxygenNote: 7.2.3

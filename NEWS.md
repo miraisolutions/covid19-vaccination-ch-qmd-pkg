@@ -1,3 +1,6 @@
+# covid19vaccinationch 2.0.0
+* New repository and migration to Qmd.
+
 # covid19vaccinationch 1.1.1
 
 * Maintenance of `renv` and GitHub Actions workflow (#16).

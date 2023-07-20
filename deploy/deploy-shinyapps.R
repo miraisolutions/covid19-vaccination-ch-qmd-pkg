@@ -6,29 +6,12 @@ rsconnect::setAccountInfo(
   Sys.getenv("SHINYAPPS_SECRET")
 )
 
-# TODO: We currently have copy the file for the deployment to work
-file.copy("inst/report/index.Rmd", "index.Rmd", overwrite = TRUE)
-
-rsconnect::deployApp(
+file.copy("inst/report/index.qmd", "index.qmd", overwrite = TRUE)
+quarto::quarto_publish_app(
+  input = "index.qmd",
+  server = "shinyapps.io",
+  name = "covid-19-vaccination-ch-qmd-pkg",
+  title = "Covid19 Vaccination CH",
   account = "miraisolutions",
-  appName = "covid19-vaccination-ch"
+  render = "local"
 )
-
-unlink("index.Rmd")
-
-# rsconnect::deployApp(
-#   appDir = "inst/report",
-#   appPrimaryDoc = "inst/report/index.Rmd",
-#   appName = "covid19-vaccination-ch",
-# )
-# rsconnect::deployDoc(
-#   doc = "inst/report/index.Rmd",
-#   appDir = ".",
-#   appName = "covid19-vaccination-ch",
-# )
-# rsconnect::deployApp(
-#   appDir = ".",
-#   appFiles = list.files(),
-#   appPrimaryDoc = "inst/report/index.Rmd",
-#   appName = "covid19-vaccination-ch"
-# )
