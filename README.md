@@ -27,29 +27,35 @@ The application fetches the data from *BAG* on a daily basis as part of a [Conti
 
 ## Package covid19vaccinationch
 
-The `covid19-vaccination-ch-qmd-ch` dashboard article is implemented through the supporting R package **covid19vaccinationch** that can be installed from GitHub with
+The `covid19-vaccination-ch-qmd-pkg` dashboard article is implemented through the supporting R package **covid19vaccinationch** that can be installed from GitHub with
 
 ``` r
-remotes::install_github("miraisolutions/covid19-vaccination-ch-qmd-ch")
+remotes::install_github("miraisolutions/covid19-vaccination-ch-qmd-pkg")
 ```
 
 and used to render the article locally from R via
 
 ``` r
-quarto::quarto_render("index.qmd")
+# render
+quarto::quarto_render("inst/report/index.qmd")
+# run
+quarto::quarto_render("inst/report/index.qmd")
+
+# or
+covid19vaccinationch::run_report()
 
 ```
 See help file for using the latest data from *BAG* source.
 
 ## Quarto article
 
-The dashboard article is defined as an Quarto document `inst/report/index.Rmd` shipped with the **covid19vaccinationch** package, containing the article text and the R code that reads and processes the data.
+The dashboard article is defined as an Quarto document `inst/report/index.qmd` shipped with the **covid19vaccinationch** package, containing the article text and the R code that reads and processes the data.
 
 The Quarto document uses `server: shiny` and contains both `ggplot2` / `plotly` graphs and `shiny` dynamic charts. The usage of `server: shiny` allows running the shiny chunks in the document.
 
 ## Deployment to *shinyapps.io*
 
-The `covid19-vaccination-ch` Quarto article is deployed to **shinyapps.io** and can be accessed at <https://mirai-solutions.ch/gallery/covid19-vaccination-ch>.
+The `covid19-vaccination-ch` Quarto article is deployed to **shinyapps.io** and can be accessed at <https://miraisolutions.shinyapps.io/covid-19-vaccination-ch-qmd-pkg/>.
 
 ## Data building with GitHub Actions
 
