@@ -27,9 +27,14 @@ data_path_pkg <- function() {
 
 #' Run the qmd report
 #'
+#' @param test for testing purposes use report_path_prj
 #' @importFrom quarto quarto_run
 #' @export
-run_report <- function() {
-  quarto::quarto_run(file.path(report_path_prj(), "index.qmd"))
+run_report <- function(test = FALSE) {
+  if (test)
+    quarto::quarto_run(file.path(report_path_prj(), "index.qmd"))
+  else
+    quarto::quarto_run(file.path(report_path(), "index.qmd"))
+  invisible()
 }
 

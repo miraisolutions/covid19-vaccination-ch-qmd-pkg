@@ -4,7 +4,10 @@
 \alias{run_report}
 \title{Run the qmd report}
 \usage{
-run_report()
+run_report(test = FALSE)
+}
+\arguments{
+\item{test}{for testing purposes use report_path_prj}
 }
 \description{
 Run the qmd report

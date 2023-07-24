@@ -6,7 +6,7 @@ test_that("Running the Rmd report works", {
     normalizePath(file.path(Sys.getenv("R_HOME"), "bin", "R"))
   }
   run_expression <- sprintf(
-    ".libPaths(%s)[1]; covid19vaccinationch::run_report()",
+    ".libPaths(%s)[1]; run_report(test = FALSE)",
     paste(deparse(.libPaths()[1]), collapse = "\n")
   )
   run_process <- processx::process$new(
