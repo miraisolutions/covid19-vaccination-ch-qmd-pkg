@@ -1,3 +1,6 @@
+# covid19vaccinationch 2.0.1
+* Review Quarto file.
+
 # covid19vaccinationch 2.0.0
 * New repository and migration to Qmd.
 

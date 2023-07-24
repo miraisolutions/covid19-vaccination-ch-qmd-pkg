@@ -1,15 +1,18 @@
 ---
 title: "Vaccination breakthroughs in Switzerland"
+subtitle: "An article published from a Quarto Document"
+author: "Mirai Solutions"
 params:
   fetch_latest_data: FALSE
   use_pkgload: FALSE 
 server: shiny
+freeze: auto
 format:
   html:
-    # theme: 
-    #   light: cerulean 
-    #   dark: cyborg
+    theme: journal
     css: styles.css
+    mainfont: "Frutiger LT W01_55 Roma1475738"
+    fontsize: 18px
     toc: true
     toc-depth: 3
     toc-location: left
@@ -21,10 +24,6 @@ execute:
   echo: false
   warning: false
 ---
-
-This is a Quarto website.
-
-To learn more about Quarto websites visit <https://quarto.org/docs/websites>.
 
 ```{r}
 #| context: setup
@@ -64,7 +63,6 @@ To see how we read BAG data in **R** please refer to the [previous article](http
 We are interested in the weekly BAG reports about vaccination breakthroughs occurred in the last 4 weeks for different age classes. See [data documentation](https://www.covid19.admin.ch/api/data/documentation){target="_blank"} and our source: [opendata.swiss](https://opendata.swiss/en/dataset/covid-19-schweiz){target="_blank"}.
 
 ```{r }
-# bag_api_url = covid19vaccinationchqmd:::bag_api_url
 bag_api_url <- "https://www.covid19.admin.ch/api/data/context/"
 
 bag_sources = jsonlite::fromJSON(bag_api_url)
@@ -120,6 +118,8 @@ As of Today (**`r Sys.Date()`**) the 4 last weeks considered are: **`r weeks4`**
 
 The age categories have been redefined again as: **`r unique(ageclassMap$AgeClass)`**.
 
+{{< pagebreak >}}
+
 ### Last 4 weeks Cases and Vaccination
 
 ```{r }
@@ -170,6 +170,12 @@ datacases <- datacases %>%
 
 The current situation of the last 4 weeks as of **`r weeks_from_to[2]`**, i.e. how the infections, hospitalizations and deaths occurred across the age classes in absolute terms is shown below. Overall during this period Switzerland has registered [**`r .extract_value(datacases, "Infections")`**]{style="background-color: #dfc77f"} infections, [**`r .extract_value(datacases, "Hospitalizations")`**]{style="background-color: #dfc77f"} hospitalizations and [**`r .extract_value(datacases, "Deaths")`**]{style="background-color: #dfc77f"} deaths.
 
+To account for different distribution of the population in the Age Classes consider the **Incidence over 100'000** inhabitants.
+
+::: {.panel-tabset}
+
+### Absolute
+
 ```{r }
 #| label: fig-cases
 #| fig-cap: "Positive, hospitalized and dead cases in the last 4 weeks."
@@ -183,8 +189,8 @@ plotcol <- pick_vac_lev_col("not_vaccinated")
 BarplotCovid(datacasesAges, g_palette = plotcol, X = "AgeClass", FACET = "Case", percent = FALSE)
 
 ```
+### Over 100K
 
-To account for different distribution of the population in the Age Classes consider the **Incidence over 100'000** inhabitants:
 
 ```{r}
 #| label: fig-cases-100k
@@ -200,8 +206,11 @@ plotcol <- pick_vac_lev_col("not_vaccinated")
 BarplotCovid(datacases100k, g_palette = plotcol,
              X = "AgeClass", FACET = "Case", percent = FALSE)
 ```
+:::
 
 *Infections* happen more frequently in younger age classes (at least in absolute terms) while *Hospitalizations* and *Deaths* are more common among the older ones.
+
+{{< pagebreak >}}
 
 ### Current Vaccination Status
 
@@ -286,9 +295,9 @@ We are happy to hear more from the readers about this topic and possibly collect
 
 ### Last 4 weeks vaccination breakthrough cases
 
-*UPDATE 2022-11: as it can be seen from the large numbers in the Unknown catefory, BAG does not keep track properly any more of the vaccination status.*
+A view of the absolute figures of all vaccination categories, including **"Unknown"**, i.e. not reported. [^1]
 
-A view of the absolute figures of all vaccination categories, including **"Unknown"**, i.e. not reported.
+[^1]: *UPDATE 2022-11: as it can be seen from the large numbers in the Unknown category, BAG does not keep track properly any more of the vaccination status.*
 
 ```{r }
 
@@ -429,6 +438,8 @@ DataPlot100kScaleRatios %>%
 
 The estimate indicate that the "Unvaccinated" people have [**`r DataPlot100kScaleRatios %>% filter(AgeClass == "All" & Status == pick_vac_lev("fully_vaccinated_first_booster") & grepl("Ratio", Variable) & Case == "Hospitalizations") %>% as.data.frame() %>% .[,"value"]`**]{style="background-color: #dfc77f"} times higher risk to be hospitalized, [**`r DataPlot100kScaleRatios %>% filter(AgeClass == "All" & Status == pick_vac_lev("fully_vaccinated_first_booster") & grepl("Ratio", Variable) & Case == "Deaths") %>% as.data.frame() %>% .[,"value"]`**]{style="background-color: #dfc77f"} times higher risk to die compared with a "Fully Vaccinated with Booster", while [**`r DataPlot100kScaleRatios %>% filter(AgeClass == "All" & Status == pick_vac_lev("fully_vaccinated_no_booster") & grepl("Ratio", Variable) & Case == "Hospitalizations") %>% as.data.frame() %>% .[,"value"]`**]{style="background-color: #dfc77f"} and [**`r DataPlot100kScaleRatios %>% filter(AgeClass == "All" & Status == pick_vac_lev("fully_vaccinated_no_booster") & grepl("Ratio", Variable) & Case == "Deaths") %>% as.data.frame() %>% .[,"value"]`**]{style="background-color: #dfc77f"} times higher compared with "Fully Vaccinated without Booster".
 
+{{< pagebreak >}}
+
 ### Scenario Analysis
 
 Assuming there are 3 possible **Scenarios** to add to the current one: what if there had been no vaccinated at all this month? Or if we had been all vaccinated? What if all with Booster?
@@ -442,8 +453,11 @@ Worth mentioning that the protection given by the vaccines against infection is 
 
 Despite the decay of vaccination benefits over time and against infections (Omicron), this is still a factor to consider.
 
-The Incidence over 100'000 people in the 3 scenarios + "Current" are presented below:
+The Incidence over 100'000 people in the 3 scenarios + "Current" are presented below, and more importantly, projecting the values of the 3 scenarios on the whole population we can evaluate the vaccination impact in absolute terms.
 
+::: {.panel-tabset}
+
+### Over 100 K
 ```{r}
 #| label: fig-vac-hosp-scen-100K
 #| fig-cap: "Last 4 weeks Hosp. Deaths Vac vs Unvac Scenarios over 100k."
@@ -468,7 +482,7 @@ StackedBarplotCovid(DataPlot100kp, X = "AgeClass", FILL = "Status", FACET = "Cas
 
 ```
 
-More importantly, projecting the values of the 3 scenarios on the whole population we can evaluate the vaccination impact in absolute terms.
+### Projection
 
 ```{r}
 #| label: fig-vac-hosp-scen
@@ -491,6 +505,8 @@ StackedBarplotCovid(DataPlotpTab7, X = "AgeClass", FILL = "Status", FACET = "Cas
              title = "Hosp. and Deaths for each scenarios")
 
 ```
+:::
+
 
 ```{r}
 
@@ -512,6 +528,8 @@ DataTabp %>%
 ```
 
 If there had been no vaccination at all, in the last 4 weeks there would have been [`r DataTabp %>% filter(AgeClass == "All" & Status == "No Vac." & Case == "Hospitalizations") %>% as.data.frame() %>% .[,"value"] %>% .funformat(FALSE)`]{style="background-color: #dfc77f"} *Hospitalizations* and [`r DataTabp %>% filter(AgeClass == "All" & Status == "No Vac." & Case == "Deaths") %>% .[,"value"] %>% .funformat(FALSE)`]{style="background-color: #dfc77f"} *Deaths*, on the contrary, if all had received booster, there would have been [`r DataTabp %>% filter(AgeClass == "All" & Status == "Vac. Booster" & Case == "Hospitalizations") %>% .[,"value"] %>% .funformat(FALSE)`]{style="background-color: #dfc77f"} *Hospitalizations* and [`r DataTabp %>% filter(AgeClass == "All" & Status == "Vac. Booster" & Case == "Deaths") %>% .[,"value"] %>% .funformat(FALSE)`]{style="background-color: #dfc77f"} *Deaths*.
+
+{{< pagebreak >}}
 
 ### Time line of reported case
 
@@ -590,7 +608,6 @@ fluidRow(
 #| fig-alt: "Last 4 weeks Impact Hosp. Deaths Vac vs Unvac per age class."
 output$lineplot1 <- plotly::renderPlotly({
 
-      message("here I am ")
       res <- filter_dataplot(data1, input$status1, input$case1)
 
       LinePlotCovid(res$data, 
@@ -664,6 +681,7 @@ output$lineplot2 <- plotly::renderPlotly({
                     title = "Cases Ratio of Unvaccinated, per Vac. Status / Age Class") })
 
 ```
+{{< pagebreak >}}
 
 ### Conclusions
 
@@ -676,7 +694,9 @@ The "Unvaccinated" and "Vaccinated" populations compared in this page have some 
 
 Other differences between the populations have been mentioned.
 
-Even with some deficiency in the data, this analysis clearly shows the benefits of vaccination and what could have happened in Switzerland if vaccines had been unavailable. *Please note that the data collection from BAG was sufficiently accurate until 2022Q2, therefore the historical comparisons of this report from 2022Q2 onwards are less meaningful.*
+Even with some deficiency in the data, this analysis clearly shows the benefits of vaccination and what could have happened in Switzerland if vaccines had been unavailable.[^2]
+
+[^2]: *Please note that the data collection from BAG was sufficiently accurate until September 2022, therefore the historical comparisons of this report from 2022Q2 onwards are less meaningful.*
 
 Similar results about the benefits of vaccination are available from other countries, their dashboards or produced reports could be checked for comparison. Here a short recent list:
 
@@ -685,6 +705,6 @@ Similar results about the benefits of vaccination are available from other count
 -   [Vaccines Surveillance Report](https://www.gov.uk/government/publications/covid-19-vaccine-weekly-surveillance-reports){target="_blank"} from UK Health Security Agency.\
 -   [Euro Surveillance report](https://www.eurosurveillance.org/content/eurosurveillance/){target="_blank"} with comparison of many countries although with old data.
 
-If you have any question about the approach, or any suggestion for improvement please do not hesitate to get in [touch](https://mirai-solutions.ch/about/contact/){target="_blank"}, we would love to hear from you as we may publish further updates to this article.
+If you have any question about the approach, or any suggestion for improvement please do not hesitate to get in [touch](https://mirai-solutions.ch/about/contact/){target="_blank"}, we would love to hear from you.
 
-This page article aims also at showing how an **R Markdown** file can be deployed to **shinyapps.io** to be a live page. For details on the architecture of the **covid19vaccinationchqmd** R package that supports this deployment and its installation see the [README](https://github.com/miraisolutions/covid19-vaccination-ch#readme){target="_blank"} on our public **GitHub** repository or read the related [**news post**](https://mirai-solutions.ch/news/2022/03/08/announce-covid19-vaccination-ch/){target="_blank"} where we described it more in details.
+This page article aims also at showing how an **Quarto** file can be deployed to **shinyapps.io** to be a live page. For details on the architecture of the **covid19vaccinationch** R package that supports this deployment and its installation see the [README](https://github.com/miraisolutions/covid19-vaccination-ch#readme){target="_blank"} on our public **GitHub** repository or read the related [**news post**](https://mirai-solutions.ch/news/2022/03/08/announce-covid19-vaccination-ch/){target="_blank"} where we described it more in details.
