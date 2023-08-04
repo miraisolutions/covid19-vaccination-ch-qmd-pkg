@@ -58,9 +58,11 @@ Here we provide a live update to these articles deployed to [shinyapps.io](https
 
 ### Reading BAG data
 
-To see how we read BAG data in **R** please refer to the [previous article](https://mirai-solutions.ch/news/2021/10/20/covid19-vaccination-breakthroughs-switzerland/){target="_blank"}.
+To see how we read BAG data in **R** please refer to the [first article](https://mirai-solutions.ch/news/2021/10/20/covid19-vaccination-breakthroughs-switzerland/){target="_blank"}.
 
-We are interested in the weekly BAG reports about vaccination breakthroughs occurred in the last 4 weeks for different age classes. See [data documentation](https://www.covid19.admin.ch/api/data/documentation){target="_blank"} and our source: [opendata.swiss](https://opendata.swiss/en/dataset/covid-19-schweiz){target="_blank"}.
+We are interested in the weekly BAG reports about vaccination breakthroughs occurred in the last 4 weeks for different age classes. See [data documentation](https://www.covid19.admin.ch/api/data/documentation){target="_blank"} and our source: [opendata.swiss](https://opendata.swiss/en/dataset/covid-19-schweiz){target="_blank"}.[^1]
+
+[^1]: *Please note that the data collection from BAG was sufficiently accurate until July 2022, therefore the current last 4 weeks report, and the historical comparisons from 2022Q3 onwards are less meaningful.*
 
 ```{r }
 bag_api_url <- "https://www.covid19.admin.ch/api/data/context/"
@@ -114,7 +116,9 @@ weeks_from_to <- weeks_to_date(weeks4, range = TRUE)
 periodLabel = paste("(", paste(weeks_from_to, collapse = ","),")", sep = "")
 ```
 
-As of Today (**`r Sys.Date()`**) the 4 last weeks considered are: **`r weeks4`** (YY-W-Week Number), i.e. in the interval from **`r weeks_from_to[1]`** to **`r weeks_from_to[2]`**.
+As of **September 2022**[^2] the 4 last weeks considered are: **`r weeks4`** (YY-W-Week Number), i.e. in the interval from **`r weeks_from_to[1]`** to **`r weeks_from_to[2]`**.
+
+[^2]: *The data collection and publication from BAG stopped in September 2022.*
 
 The age categories have been redefined again as: **`r unique(ageclassMap$AgeClass)`**.
 
@@ -295,9 +299,9 @@ We are happy to hear more from the readers about this topic and possibly collect
 
 ### Last 4 weeks vaccination breakthrough cases
 
-A view of the absolute figures of all vaccination categories, including **"Unknown"**, i.e. not reported. [^1]
+A view of the absolute figures of all vaccination categories, including **"Unknown"**, i.e. not reported. [^3]
 
-[^1]: *UPDATE 2022-11: as it can be seen from the large numbers in the Unknown category, BAG does not keep track properly any more of the vaccination status.*
+[^3]: *UPDATE 2022-07: as it can be seen from the large numbers in the Unknown category, BAG does not keep track properly any more of the vaccination status.*
 
 ```{r }
 
@@ -694,9 +698,7 @@ The "Unvaccinated" and "Vaccinated" populations compared in this page have some 
 
 Other differences between the populations have been mentioned.
 
-Even with some deficiency in the data, this analysis clearly shows the benefits of vaccination and what could have happened in Switzerland if vaccines had been unavailable.[^2]
-
-[^2]: *Please note that the data collection from BAG was sufficiently accurate until September 2022, therefore the historical comparisons of this report from 2022Q2 onwards are less meaningful.*
+Even with some deficiency in the data, this analysis clearly shows the benefits of vaccination and what could have happened in Switzerland if vaccines had been unavailable.
 
 Similar results about the benefits of vaccination are available from other countries, their dashboards or produced reports could be checked for comparison. Here a short recent list:
 
@@ -707,4 +709,6 @@ Similar results about the benefits of vaccination are available from other count
 
 If you have any question about the approach, or any suggestion for improvement please do not hesitate to get in [touch](https://mirai-solutions.ch/about/contact/){target="_blank"}, we would love to hear from you.
 
-This page article aims also at showing how an **Quarto** file can be deployed to **shinyapps.io** to be a live page. For details on the architecture of the **covid19vaccinationch** R package that supports this deployment and its installation see the [README](https://github.com/miraisolutions/covid19-vaccination-ch#readme){target="_blank"} on our public **GitHub** repository or read the related [**news post**](https://mirai-solutions.ch/news/2022/03/08/announce-covid19-vaccination-ch/){target="_blank"} where we described it more in details.
+This page article aims also at showing how an **Quarto** file can be deployed to **shinyapps.io** to be a live page. For details on the architecture of the **covid19vaccinationch** R package that supports this deployment and its installation see the [README](https://github.com/miraisolutions/covid19-vaccination-ch-qmd-pkg#readme){target="_blank"} on our public **GitHub** repository or read the related [**news post**](https://mirai-solutions.ch/news/2022/03/08/announce-covid19-vaccination-ch/){target="_blank"} where we described it more in details.[^4]
+
+[^4]: *This article is partially out of date, it describes the old version of the app, based on an R Markdown report, which was converted to Quarto in August 2023.*
