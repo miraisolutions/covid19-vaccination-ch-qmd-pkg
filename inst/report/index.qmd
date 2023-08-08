@@ -9,16 +9,18 @@ server: shiny
 freeze: auto
 format:
   html:
-    theme: journal
+    # theme: journal
     css: styles.css
-    mainfont: "Frutiger LT W01_55 Roma1475738"
-    fontsize: 18px
+    # mainfont: "Frutiger LT W01_55 Roma1475738"
+    # fontsize: 18px
     toc: true
     toc-depth: 3
     toc-location: left
+    toc-title: Chapters
     number-sections: false
     self-contained: false
     smooth-scroll: true
+    monofont: 'Source Code Pro'
 editor: visual
 execute:
   echo: false
@@ -47,8 +49,11 @@ library(lubridate)
 library(shiny)
 # we use a font size relative to the responsive body font size (em)
 # 
-table_css <- "border-collapse: separate; border-spacing: 0.25em; width: 100%; font-size: 0.7em; margin-bottom: 14.5px;"
+table_css <- "border-collapse: separate; border-spacing: 0.25em; width: 100%; font-size: 0.6em; margin-bottom: 14.5px;border-collapse: false;" # original 14.5
+
+# table_css <- "border-collapse: separate; border-spacing: 0.25em; display: inline-table; overflow-x: true; font-size: 0.5em; margin-bottom: 14.5px;border-collapse: false;" # original 14.5
 table_cell_css <- "white-space: nowrap; font-size: .95em;" # relative to the table_css
+# table_cell_css <- ""
 ```
 
 Since May 2020 [**Mirai Solutions**]{style="background-color: #dfc77f"} is showing a dashboard on our [gallery](https://mirai-solutions.ch/gallery/){target="_blank"} that contains a global view of the [COVID-19 Pandemic](https://mirai-solutions.ch/gallery/covid19/){target="_blank"} with a further split by continent and country. We use publicly available data from the [COVID-19 Data Hub](https://covid19datahub.io/){target="_blank"}, a great open source project providing a unified data set put together from numerous official local sources from all over the world.
@@ -266,6 +271,8 @@ The biggest difference is the younger age of the "Unvaccinated" population, less
 Further bias is introduced by the fact that "Unvaccinated" may have recovered from Covid and therefore have a protection. Unfortunately we cannot extract relevant information from BAG that would allow us to exclude the already **Infected** from the "Unvaccinated" population. We can show here the % of total contagion in the global population and warn the readers that a "small" % of the "Unvaccinated" is NOT unprotected (leading to underestimation of the positive effect of vaccination).
 
 ```{r }
+#| label: tab1
+
 TotConfirmed <- CASES.AG1M %>% filter(AgeClass != "unknown") %>% select(AgeClass,confirmed_tot, pop)
 TotConfirmed <- TotConfirmed %>%
   mutate(Percentage = confirmed_tot / pop * 100) %>%
@@ -277,13 +284,19 @@ TotConfirmed <- TotConfirmed %>%
 TotConfirmed %>%
   mutate(value = ifelse(value < 100, paste(round(value, 1), "%"), # simplified
                         formatC(round(value), format = "f", big.mark = "'", digits = 0))) %>%
-  addHtmlTableStyle(
+  pivot_wider(names_from = "Case") %>%
+  setNames(replace(names(.), 1, "")) %>%
+  addHtmlTableStyle(spacer.celltype = "skip",
     align = "c", css.table = sub(" *margin-bottom.*?;", "", table_css), 
     css.cell = color_cells(TotConfirmed, header = "Case", rnames = "AgeClass", table_cell_css = table_cell_css)
   ) %>%
-  tidyHtmlTable(header = Case ,
+  # tidyHtmlTable(header = Case ,
+  #               #cgroup = c(Case),
+  #               rnames = AgeClass,
+  #               caption = paste("Table 1: Confirmed Infections per Age Class.", weeks_from_to[2])) 
+  htmlTable(#header = Case ,
                 #cgroup = c(Case),
-                rnames = AgeClass,
+                rnames = FALSE,
                 caption = paste("Table 1: Confirmed Infections per Age Class.", weeks_from_to[2])) 
 
 ```
@@ -341,12 +354,13 @@ StackedBarplotCovid(DataPlotTab1, X = "AgeClass", FILL = "Status", FACET = "Case
 Overall the vaccination status is "Unknown" for **`r .calc_perc_unknwon(DataPlot, "Hospitalizations")`** of the *Hospitalized* and for **`r .calc_perc_unknwon(DataPlot, "Deaths")`** of the *Deaths*.
 
 ```{r}
+#| label: tab2
 
 DataTab %>%
   filter(!Case %in% c("Infections")) %>%
   select(-AsOfDate) %>%
   mutate(value = formatC(round(value), format = "f", big.mark = "'", digits = 0)) %>%
-  addHtmlTableStyle(
+  addHtmlTableStyle(spacer.celltype = "skip",
     align = "c", css.table = sub(" *margin-bottom.*?;", "", table_css), 
     css.cell = color_cells(DataTab %>%
                              filter(!Case %in% c("Infections")) %>%
@@ -367,20 +381,21 @@ There is no hint of whether the **"Unknown" entries** tend to be more or less va
 DataTabScale <- rescale_unknown(DataTab)
 ```
 
-```{r ageclasses-vacc-unvac-tab4-tab, warning=FALSE, out.width="100%"}
+```{r }
+#| label: tab3
 DataTabScale %>%
   mutate(value = formatC(round(value), format = "f", big.mark = "'", digits = 0)) %>%
   mutate(value = ifelse(value == "NaN", "", value)) %>%
   select(-AsOfDate) %>%
-  addHtmlTableStyle(
-    align = "c", css.table = table_css, css.cell = color_cells(DataTabScale %>% select(-1), header = "Status" ,
-                                                               cgroup = "Case",
-                                                               rnames = "AgeClass")
+  addHtmlTableStyle(spacer.celltype = "skip",
+    align = "c", css.table = table_css, 
+      css.cell = color_cells(DataTabScale %>% select(-1), header = "Status" , cgroup = "Case", rnames = "AgeClass", table_cell_css = table_cell_css)
   ) %>%
   tidyHtmlTable(header = Status ,
                 cgroup = Case,
                 rnames = AgeClass,
-                caption = paste("Table 3: entries per age and vaccination status. Reallocation of Unknown vaccination status.", periodLabel)) 
+                caption = paste("Table 3: entries per age and vaccination status. Reallocation of Unknown vaccination status.", periodLabel))  
+
 
 ```
 
@@ -423,9 +438,11 @@ StackedBarplotCovid(DataPlot100kScaleRatiosPlot %>% select(-Variable) , g_palett
 ```
 
 ```{r}
+#| label: tab4
+
 DataPlot100kScaleRatios %>%
   mutate(value = replace_na(as.character(value), "")) %>%
-  addHtmlTableStyle(
+  addHtmlTableStyle(spacer.celltype = "skip",
     align = "c", css.table = table_css,
     css.cell = color_cells(DataPlot100kScaleRatios %>%
                              select(-pop, -AsOfDate), header = "Status" ,
@@ -517,7 +534,7 @@ StackedBarplotCovid(DataPlotpTab7, X = "AgeClass", FILL = "Status", FACET = "Cas
 DataTabp <- DataPlotp %>% select(-pop, AsOfDate) %>%
               rename(value = Value)
 DataTabp %>% 
-  addHtmlTableStyle(
+  addHtmlTableStyle(spacer.celltype = "skip",
     align = "c", css.table = table_css, 
     css.cell = color_cells(DataTabp %>% select(-1), header = "Status" ,
                            cgroup = "Case",

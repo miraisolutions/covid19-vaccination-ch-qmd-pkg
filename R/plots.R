@@ -745,6 +745,7 @@ color_cells <- function(data, header, cgroup = NULL, rnames, rgbn = 255, skip = 
   colvalues <-  colvalues %>%
     mutate(!!sym(rnames) := table_cell_css) %>%
     as.matrix()
+  #colvalues <- cbind(colvalues[,1], colvalues)
   colvalues
 }
 
