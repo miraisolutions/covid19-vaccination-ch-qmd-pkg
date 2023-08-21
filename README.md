@@ -55,7 +55,7 @@ The Quarto document uses `server: shiny` and contains both `ggplot2` / `plotly` 
 
 ## Deployment to *shinyapps.io*
 
-The `covid19-vaccination-ch` Quarto article is deployed to **shinyapps.io** and can be accessed at <https://miraisolutions.shinyapps.io/covid-19-vaccination-ch-qmd-pkg/>.
+The `covid19-vaccination-ch` Quarto article is deployed to **shinyapps.io** and can be accessed at <https://miraisolutions.shinyapps.io/covid19-vaccination-ch-qmd/>.
 
 ## Data building with GitHub Actions
 
