@@ -1,4 +1,5 @@
 # covid19vaccinationch 2.0.2
+* Updated to new rsconnect version, rebuilt renv project
 
 # covid19vaccinationch 2.0.1
 * Review Quarto file.

@@ -13,5 +13,6 @@ quarto::quarto_publish_app(
   name = "covid19-vaccination-ch-qmd",
   title = "Covid19 Vaccination CH",
   account = "miraisolutions",
-  render = "local"
+  render = "local",
+  forceUpdate = TRUE
 )
