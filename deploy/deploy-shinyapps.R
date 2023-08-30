@@ -10,8 +10,9 @@ file.copy("inst/report/index.qmd", "index.qmd", overwrite = TRUE)
 quarto::quarto_publish_app(
   input = "index.qmd",
   server = "shinyapps.io",
-  name = "covid19-vaccination-ch-qmd",
+  name = "covid19-vaccination-ch-qmd-test",
   title = "Covid19 Vaccination CH",
   account = "miraisolutions",
-  render = "local"
+  render = "local",
+  forceUpdate = TRUE
 )
