@@ -1,3 +1,6 @@
+# covid19vaccinationch 2.0.3
+* Disabled GitHub actions and data update
+
 # covid19vaccinationch 2.0.2
 * Updated to new rsconnect version, rebuilt renv project
 

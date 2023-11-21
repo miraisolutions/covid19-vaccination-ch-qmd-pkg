@@ -63,4 +63,4 @@ It is likely that upon data structure changes from *BAG* the article might fail 
 
 Data are stored as RDS files inside the package under `inst/bag_data`, and used when rendering the article. A function of the package `build_data()` rebuilds the RDS files with the latest *BAG* data and overwrites them in `inst/bag_data`. This function is executed by the GitHub Action step _"Fetch and rebuild latest BAG data"_ every Tuesday at 15:00 UTC (since April 2022 BAG switched to weekly updates, on Tuesdays at 15:30 Zurich time), and the updated data are tested (relying on `R CMD check`) and then committed and pushed to the `main` branch. Finally, the article with updated data is deployed to *shinyapps.io*, ensuring the application can be visualized with the daily updates.
 
-BAG stopped updating data in September 2022.
+BAG stopped updating data in September 2022. The automated data update of the app is interrupted.
