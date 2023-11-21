@@ -1,6 +1,6 @@
 Package: covid19vaccinationch
 Title: Vaccination Breakthroughs in CH (Qmd)
-Version: 2.0.2
+Version: 2.0.3
 Authors@R: 
     person("Guido", "Maggio", , "guido-maggio@mirai-solutions.com", role = c("cre", "aut"))
 Description: A live Quarto article on vaccination breakthroughs in Switzerland,
